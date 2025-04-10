@@ -1,0 +1,6 @@
+- commit test
+- 커밋 메시지를 검사 GitHub Action
+  - 허용되는 타입: feat, fix, chore, docs, refactor, test, style
+- test 용 error commit
+- 메시지 "error: error?"
+
