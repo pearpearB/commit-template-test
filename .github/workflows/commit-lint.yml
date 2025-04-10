@@ -1,0 +1,35 @@
+name: Lint Commit Messages
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  commit-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get all commits in the PR
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          COMMITS=$(git log origin/${{ github.base_ref }}..HEAD --pretty=format:"%s")
+          echo "$COMMITS" > commits.txt
+
+      - name: Check commit messages
+        run: |
+          echo "Checking commit messages..."
+          invalid=0
+          while IFS= read -r line; do
+            echo "🔍 Checking: $line"
+            if [[ ! "$line" =~ ^(feat|fix|chore|docs|refactor|test|style):\ .+ ]]; then
+              echo "❌ Invalid commit message: $line"
+              invalid=1
+            fi
+          done < commits.txt
+
+          if [ $invalid -eq 1 ]; then
+            echo "Some commit messages do not follow the required format."
+            exit 1
+          fi
