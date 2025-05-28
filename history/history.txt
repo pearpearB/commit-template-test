@@ -1,0 +1,9 @@
+$ npm install husky --save-dev
+$ npx husky install
+$ npm install @commitlint/config-conventional @commitlint/cli
+
+# .husky/commit-msg 작성
+# commitlint.config.js 작성
+
+$ npm run prepare
+
